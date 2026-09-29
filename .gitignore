@@ -1,0 +1,13 @@
+/out/
+/build/
+/.vs/
+/local/
+/logs/
+/captures/
+*.user
+*.dmp
+*.sav
+*.pdb
+*.obj
+*.exe
+*.dll
