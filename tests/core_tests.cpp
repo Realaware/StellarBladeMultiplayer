@@ -26,7 +26,7 @@ void check(bool value, const char* expression, int line) {
 #define CHECK(...) check(static_cast<bool>((__VA_ARGS__)), #__VA_ARGS__, __LINE__)
 
 void near(double actual, double expected, double epsilon = 0.00001) {
-    if (std::abs(actual - expected) > epsilon) {
+    if (!std::isfinite(actual) || !std::isfinite(expected) || std::abs(actual - expected) > epsilon) {
         throw std::runtime_error("expected " + std::to_string(expected) + ", got " + std::to_string(actual));
     }
 }
