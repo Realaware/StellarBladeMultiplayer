@@ -134,7 +134,7 @@ function Test-SaveBackup {
     Assert-NoLinkAncestors $root
     if (Test-Path -LiteralPath (Join-Path $root 'INCOMPLETE.txt')) { throw 'Backup is marked incomplete.' }
     $manifestPath = Join-Path $root 'manifest.json'
-    $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+    $manifest = Get-Content -LiteralPath $manifestPath -Encoding UTF8 -Raw | ConvertFrom-Json
     if ($manifest.schema_version -ne 1 -or $manifest.status -ne 'VERIFIED' -or
         $manifest.archive_name -cne 'SaveGames.zip' -or $manifest.archive_sha256 -notmatch '^[0-9A-F]{64}$') {
         throw 'Unsupported or incomplete backup manifest.'

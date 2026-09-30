@@ -2,11 +2,17 @@
 
 ## Implemented foundation
 
-`sbcoop_core` contains generic types, a bounded queue, a packet codec, an entity registry and a snapshot buffer. It has no knowledge of Steam, UE4SS, Stellar Blade memory, files, or native functions.
+`sbcoop_core` contains generic types, a bounded queue, a packet codec, an entity registry, a snapshot buffer and the save coordinator. It has no knowledge of Steam, UE4SS, Stellar Blade memory or native functions. `FileFlagStore` accesses only project-owned flag metadata, separate from native saves.
 
 `IGameAdapter` is a project-owned interface with create/apply/destroy/is-alive operations for visual proxies. These names are not reverse-engineered game functions. The only implementation is `testing::FakeGameAdapter`, which stores values and enforces the constructing thread as its owner.
 
 The harness has two simulated peers and a deterministic in-process link. A scripted setup supplies a nonzero session ID, epoch, entity identity and lifecycle messages. This substitutes for admission and reliable lifecycle delivery solely in tests; it is not a production session manager.
+
+`save::SaveSystem` consumes copied native observations, backup-check results and creation receipts. It verifies account/profile/slot/save-instance identity, persists creation intent, and commits a co-op flag only after a verified successful new-slot creation receipt and consistent post-creation inventory. A replaced slot does not inherit the former save's flag. These are project contracts; no native producer exists yet.
+
+`FileFlagStore` writes bounded, versioned `.intent` and `.flag` records without replacing existing records. `save::RuntimeController` owns the filesystem worker, serializes bounded commands/observations/receipts, fences permissions by epoch/generation/request, and emits bounded creation requests for a future verified game-thread adapter. Cancellation removes stale outbound requests; errors block admission. It accepts a verifier callback and supplies copied snapshots. The Windows `sbcoop_backup_runtime` invokes the real archive verifier in a bounded child process; see `SAVE_BACKUP_RUNTIME.md`.
+
+The optional `sbcoop_save_ui` maps copied runtime snapshots with Dear ImGui and returns Create/Refresh commands. Its separate Windows preview still uses the original synchronous simulated provider. Neither the panel nor UI workers may access native objects. The in-game host, real-verifier configuration and verified game-thread/native adapter remain pending; see `SAVE_SYSTEM.md`.
 
 ## Ownership and lifetimes
 
@@ -36,8 +42,8 @@ Future receive path: transport -> bounded decoder -> authenticated session/owner
 
 Future transmit path: game-thread capture -> immutable state/events -> bounded network queue -> serializer -> transport. Coalesce obsolete state; fail a session rather than silently dropping important events.
 
-The copy-only PowerShell save helper archives the entire SaveGames folder into a new timestamped directory and verifies each decompressed file against read-locked sources. A standalone verifier checks archive and per-file hashes from the manifest. It does not modify live saves or implement native slot selection/restoration. The user's confirmed behavior is that only the loaded slot changes; a future adapter must identify the actual co-op slot before enabling multiplayer. A valid protected backup is reused across sessions; no routine swaps/restores or per-session copies. Direct save edits/recovery remain separate operations, and network messages never select filesystem paths. See `SAVE_SAFETY.md`.
+The copy-only PowerShell save helper archives the entire SaveGames folder into a new timestamped directory and verifies each decompressed file against read-locked sources. A standalone verifier checks archive and per-file hashes from the manifest. It does not modify live saves or implement native slot selection/restoration. The user's confirmed behavior is that only the loaded slot changes; a future adapter must prove the loaded save instance matches a flag issued after mod-requested native creation. A valid protected backup is reused across sessions; no routine swaps/restores or per-session copies. Direct save edits/recovery remain separate operations, and network messages never select filesystem paths. See `SAVE_SAFETY.md`.
 
 ## Explicitly absent
 
-No sockets, GNS, handshake/authentication, spawn-ack barriers, production replication manager, clock sync, logging backend, UI, game hooks, native adapter, combat, enemy AI, save writes, transitions or progression implementation. These require separate tasks and evidence gates.
+No sockets, GNS, handshake/authentication, spawn-ack barriers, production replication manager, clock sync, logging backend, in-game UI host, game hooks, native adapter, combat, enemy AI, native save creation/writes, transitions or progression implementation. These require separate tasks and evidence gates.

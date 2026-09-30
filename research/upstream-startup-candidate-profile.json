@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-01T02:21:56.4241160+09:00",
+  "purpose": "Isolated cooperative startup deadline candidate for native save-system prerequisites",
+  "baselineProfile": "research/upstream-build-profile.json",
+  "baselineProfileSha256": "3E96B90D8E6F630032078B0031B384B21618093F11276C5BCAC499B9D9E3D6B6",
+  "sourceDirectory": "out/dependencies/ue4ss-upstream-e3ba101-bounded-source",
+  "buildDirectory": "out/build/ue4ss-upstream-e3ba101-bounded",
+  "buildVersionLabel": "e3ba101-startup-01",
+  "patch": {
+    "loader_pin": "e3ba1016562d6c0868c410d0a71e88bfcdbf691b",
+    "unreal_pin": "38e7171e9e8c4a871ff84765848f0290ca34a44e",
+    "patches": [
+      {
+        "path": "UE4SS/include/UE4SSProgram.hpp",
+        "before_sha256": "AFDEA0F67204EE1FFCDAED0C3A02A444029222754C5981D50A46D538BFAD98BC",
+        "after_sha256": "F7BA9BF7A16FB67BA9DAA03AAF8E5F14AEBE8FEF3D15CE7A0231E95B73AECBF2"
+      },
+      {
+        "path": "UE4SS/src/UE4SSProgram.cpp",
+        "before_sha256": "5841A44FB1782C161447B383A6F36B75696F04111CCFB44143F65C8DE8292092",
+        "after_sha256": "6D6F606386CAECFBC28D24A88AFD78FFA76CA7754174D618BF65981414400434"
+      },
+      {
+        "path": "UE4SS/src/main_ue4ss_rewritten.cpp",
+        "before_sha256": "79FBFCFBC69B7E2AA42500E246937E6C8B60C041071C3C4B0A683EF7D3F2395E",
+        "after_sha256": "1C58DA4ECCF5E1E238FC712389CD3546DF07BE8630F7DEBFDF5B172F9B7989FE"
+      },
+      {
+        "path": "deps/first/Unreal/include/Unreal/UnrealInitializer.hpp",
+        "before_sha256": "CA08DDE374687E0C035299FA7AD43AF0C6BF481DAF0F1053AE8E6F8FBD2C7787",
+        "after_sha256": "49DFA9520E6FC13DEB8BA6A3F6A82F18E805C57F5378E143B40327ACC956FCE9"
+      },
+      {
+        "path": "deps/first/Unreal/src/UnrealInitializer.cpp",
+        "before_sha256": "5CB97A31ACC657D0218555F66FE095869242B53698D5B58FA89694CB1E1CBA65",
+        "after_sha256": "AB68D06E5655CED78CACC9F1878181231BBD90B4691A5621F7BCB9C347CBDF3E"
+      },
+      {
+        "path": "UE4SS/CMakeLists.txt",
+        "before_sha256": "978ABE8441FD365C57191B99DA8B5D0B7FEBB11FEBD2C47CEF77C2F97A4C1A65",
+        "after_sha256": "D5E599944440067AA75DF9F8782E77C5AA7FAA920F081E73EC47C9BC4C3CF4E5"
+      }
+    ],
+    "guard_sha256": "57D7F5998DD5E08650ECF0582F1A4BA91E20A674A304B0A2D23304E6E20C786D",
+    "patch_script_sha256": "27793926CB26D257B9C0073A52252E88F1F5798B43764A220BC996D8B6AE102A",
+    "runtime_qualified": false,
+    "native_save_tests": 0
+  },
+  "compiler": {
+    "name": "MSVC",
+    "version": "19.44.35228.0",
+    "toolsetDirectory": "14.44.35207",
+    "windowsSdk": "10.0.26100.0",
+    "cmakeVersion": "3.31.6",
+    "configuration": "Game__Shipping__Win64",
+    "languageStandard": "stdcpplatest",
+    "runtimeLibrary": "MultiThreadedDLL",
+    "architecture": "x64"
+  },
+  "rust": {
+    "rustupVersion": "1.29.1",
+    "rustupExeSha256": "6F4BEF66261261FCB43131BE8720BAB817D403A09EDEC7455C371974B90BDB7E",
+    "toolchain": "1.98.1-x86_64-pc-windows-msvc",
+    "rustcCommit": "48a229ceaefd4985c50990b14116b6d856af0985",
+    "localRoot": "out/toolchains/ue4ss-rust",
+    "persistentPathModified": false
+  },
+  "offlineDependencies": [
+    {
+      "name": "concurrentqueue-src",
+      "commit": "c68072129c8a5b4025122ca5a0c82ab14b30cb03",
+      "modifiedFiles": []
+    },
+    {
+      "name": "corrosion-src",
+      "commit": "52844733e14f095c947577627e367ee5f6458af7",
+      "modifiedFiles": []
+    },
+    {
+      "name": "fmt-src",
+      "commit": "40626af88bd7df9a5fb80be7b25ac85b122d6c21",
+      "modifiedFiles": [
+        "include/fmt/ranges.h"
+      ]
+    },
+    {
+      "name": "glaze-src",
+      "commit": "3a850807501d98d23bab4bdc5af64d8d4e83e6bc",
+      "modifiedFiles": []
+    },
+    {
+      "name": "glfw-src",
+      "commit": "e2c92645460f680fd272fd2eed591efb2be7dc31",
+      "modifiedFiles": []
+    },
+    {
+      "name": "imgui-src",
+      "commit": "5d4126876bc10396d4c6511853ff10964414c776",
+      "modifiedFiles": []
+    },
+    {
+      "name": "imguitextedit-src",
+      "commit": "6d943aba9f7cef05da80b86dbb0253b63818f95c",
+      "modifiedFiles": []
+    },
+    {
+      "name": "polyhook2-src",
+      "commit": "298d56210b9d9e66cde8f96481d6053925c6ae15",
+      "modifiedFiles": []
+    },
+    {
+      "name": "raw_pdb-src",
+      "commit": "8c6a7146393c83d27fa101e8bc8017f2a7f151df",
+      "modifiedFiles": []
+    },
+    {
+      "name": "zydis-src",
+      "commit": "a2278f1d254e492f6a6b39f6cb5d1f5d515659dc",
+      "modifiedFiles": []
+    },
+    {
+      "name": "IconFontCppHeaders",
+      "commit": "210b5a399a64270674560d633638952d1e8d804d",
+      "modifiedFiles": []
+    }
+  ],
+  "buildExitCode": 0,
+  "buildTargets": [
+    "UE4SS",
+    "proxy"
+  ],
+  "helperTests": {
+    "configuration": "Debug",
+    "ctestEntries": 1,
+    "passed": 1,
+    "syntheticCases": 10,
+    "concurrentRaces": 128,
+    "checkMacroCompatibilityCompiled": true,
+    "lastRunSeconds": 0.04
+  },
+  "upstreamCTestEntries": 0,
+  "outputs": [
+    {
+      "path": "out/build/ue4ss-upstream-e3ba101-bounded/Game__Shipping__Win64/bin/UE4SS.dll",
+      "bytes": 20617216,
+      "sha256": "167E41D7E852EC9A918708A89E5BB071D936DB0F0FFE96542320F72FA060E173"
+    },
+    {
+      "path": "out/build/ue4ss-upstream-e3ba101-bounded/Game__Shipping__Win64/bin/dwmapi.dll",
+      "bytes": 273920,
+      "sha256": "E4CD7720E9E73BB95E066064953002B5873D52F7148BE3EDC7940E5FAB87D6EF"
+    },
+    {
+      "path": "out/build/ue4ss-upstream-e3ba101-bounded/Game__Shipping__Win64/lib/UE4SS.lib",
+      "bytes": 2200544,
+      "sha256": "39C1CE408ED54278AE0EBEF12C46BAEDE391052B23684BDD462D3AABCBAE05B3"
+    },
+    {
+      "path": "out/build/ue4ss-upstream-e3ba101-bounded/Game__Shipping__Win64/lib/Unreal.lib",
+      "bytes": 443560792,
+      "sha256": "181FF3C5FBAADEA1C15D094E3C5AB6208EBA7E6C477ED640D7452814A32DDA40"
+    },
+    {
+      "path": "out/build/upstream-startup-guard-test/Debug/upstream_startup_guard_tests.exe",
+      "bytes": 605696,
+      "sha256": "2BBC229EE5994FC189B5F82B869CBECE77C49A6563E39AB3B087A8FC7DD18E66"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "research/patches/upstream-startup/StartupGuard.hpp",
+      "sha256": "57D7F5998DD5E08650ECF0582F1A4BA91E20A674A304B0A2D23304E6E20C786D"
+    },
+    {
+      "path": "research/patches/upstream-startup/tests.cpp",
+      "sha256": "71BB7FD2DA01BE62802F32639D6DC41F57771F6B88591ECE7F73BAFF12ABE7DC"
+    },
+    {
+      "path": "research/patches/upstream-startup/CMakeLists.txt",
+      "sha256": "9B77CA1C6C92E7CE43BECBC5744C13CC117E58BD9CC702506808047C00946533"
+    },
+    {
+      "path": "research/patches/upstream-startup/apply_candidate.py",
+      "sha256": "27793926CB26D257B9C0073A52252E88F1F5798B43764A220BC996D8B6AE102A"
+    },
+    {
+      "path": "research/patches/upstream-startup/build_candidate.ps1",
+      "sha256": "4262DDAE9ACC6E97B6462CE73B72AAD3A9EE53C13E59277724C20B1FF59281DE"
+    },
+    {
+      "path": "out/local/upstream-startup-01/bounded-configure.log",
+      "sha256": "28A885BB21D18F47910936ED730B33D1E6276EA96CAF0D9B7EFD7F2E5861172F"
+    },
+    {
+      "path": "out/local/upstream-startup-01/bounded-build-macro-failure.log",
+      "sha256": "486E7E5F1B757DB458E3C7B6EF5820D958017DD4974C0D0101410514B56498D4"
+    },
+    {
+      "path": "out/local/upstream-startup-01/bounded-build.log",
+      "sha256": "B7863938618A71598545C93DC4BB460C81C638F88F5D7A358DD23ABCCADAD89D"
+    },
+    {
+      "path": "out/build/upstream-startup-guard-test/Testing/Temporary/LastTest.log",
+      "sha256": "B535FF4F000525DC81587EA32707452F67780B38E034BF75A6AE55ABBBF3EB52"
+    }
+  ],
+  "candidateGameStartTestsRun": 0,
+  "cleanStartsVerified": 0,
+  "cleanExitsVerified": 0,
+  "nativeSaveTestsRun": 0,
+  "runtimeQualified": false,
+  "nativeSaveBindingsVerified": false,
+  "inGameUiVerified": false,
+  "hardDeadlineVerified": false,
+  "explicitUnloadSupported": false,
+  "nativeTeardownVerified": false,
+  "bitForBitRebuildVerified": false
+}

@@ -2,7 +2,8 @@
 param(
     [ValidateSet('Debug', 'Release')]
     [string]$Configuration = 'Debug',
-    [switch]$RunHarness
+    [switch]$RunHarness,
+    [switch]$BuildSaveUi
 )
 
 $ErrorActionPreference = 'Stop'
@@ -39,7 +40,13 @@ function Invoke-Checked {
 $preset = 'windows-' + $Configuration.ToLowerInvariant()
 Push-Location -LiteralPath $repoRoot
 try {
-    Invoke-Checked -Executable $cmakePath -Arguments @('--preset', 'windows-vs2022')
+    $configureArguments = @('--preset', 'windows-vs2022')
+    if ($BuildSaveUi) {
+        & (Join-Path $PSScriptRoot 'fetch-save-ui.ps1')
+        $uiSourceDirectory = Join-Path $repoRoot 'out\dependencies\imgui-v1.91.9b\imgui-1.91.9b'
+        $configureArguments += @('-DSBCOOP_BUILD_SAVE_UI=ON', '-DSBCOOP_IMGUI_VERSION=1.91.9b', "-DSBCOOP_IMGUI_DIR=$uiSourceDirectory")
+    }
+    Invoke-Checked -Executable $cmakePath -Arguments $configureArguments
     Invoke-Checked -Executable $cmakePath -Arguments @('--build', '--preset', $preset)
     Invoke-Checked -Executable $ctestPath -Arguments @('--preset', $preset)
     if ($RunHarness) {

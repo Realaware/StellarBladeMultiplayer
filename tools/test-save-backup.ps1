@@ -10,7 +10,8 @@ $destination = Join-Path $fixtureRoot 'archives'
 [IO.Directory]::CreateDirectory((Join-Path $source 'empty-directory')) | Out-Null
 [IO.File]::WriteAllBytes((Join-Path $source 'account\Slot00.sav'), [byte[]](0..255))
 [IO.File]::WriteAllText((Join-Path $source 'account\Backup\Slot00_old.sav'), 'older dummy save')
-[IO.File]::WriteAllText((Join-Path $source 'account\설정.sav'), 'dummy settings')
+$unicodeFileName = [string][char]0xC124 + [char]0xC815 + '.sav'
+[IO.File]::WriteAllText((Join-Path (Join-Path $source 'account') $unicodeFileName), 'dummy settings')
 [IO.File]::WriteAllText((Join-Path $source 'steam_autocloud.vdf'), 'dummy metadata')
 $hiddenPath = Join-Path $source 'hidden.dat'
 [IO.File]::WriteAllBytes($hiddenPath, [byte[]]@())
@@ -40,8 +41,9 @@ $before = Get-FixtureHashes
 $first = New-SaveBackup -SourceFolder $source -BackupRoot $destination
 Assert-True ($first.status -eq 'VERIFIED' -and $first.file_count -eq 5) 'Complete backup includes hidden/Unicode/nested files'
 Assert-True ($before -ceq (Get-FixtureHashes)) 'Original file contents and timestamps are unchanged'
-$manifest = Get-Content -LiteralPath $first.manifest -Raw | ConvertFrom-Json
+$manifest = Get-Content -LiteralPath $first.manifest -Encoding UTF8 -Raw | ConvertFrom-Json
 Assert-True (@($manifest.directories) -contains 'SaveGames/empty-directory/') 'Empty directories are preserved'
+Assert-True (@($manifest.files.archive_path) -ccontains ('SaveGames/account/' + $unicodeFileName)) 'Unicode filename survives UTF-8 manifest decoding'
 Assert-True ((Get-Content -LiteralPath (Join-Path $first.backup_directory 'VERIFIED.txt') -Raw).StartsWith('VERIFIED:')) 'Completion marker is accurate'
 $again = Test-SaveBackup -BackupDirectory $first.backup_directory
 Assert-True ($again.archive_sha256 -eq $first.archive_sha256) 'Independent archive re-verification passes'
@@ -75,7 +77,7 @@ $bytes[0] = $bytes[0] -bxor 1
 Assert-Fails { Test-SaveBackup -BackupDirectory $corrupt } 'Archive SHA-256'
 Write-Output 'PASS: archive corruption is detected'
 
-$badManifest = Get-Content -LiteralPath (Join-Path $corrupt 'manifest.json') -Raw | ConvertFrom-Json
+$badManifest = Get-Content -LiteralPath (Join-Path $corrupt 'manifest.json') -Encoding UTF8 -Raw | ConvertFrom-Json
 [IO.File]::Copy($first.archive, $corruptArchive, $true)
 $badManifest.files[0].sha256 = ('0' * 64)
 [IO.File]::WriteAllText((Join-Path $corrupt 'manifest.json'), ($badManifest | ConvertTo-Json -Depth 8))
